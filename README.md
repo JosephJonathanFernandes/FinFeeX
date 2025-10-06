@@ -1,5 +1,15 @@
 # 💰 FinFeeX – Hidden-Fees X-Ray
 
+[![CI](https://github.com/JosephJonathanFernandes/FinFeeX/actions/workflows/ci.yml/badge.svg)](https://github.com/JosephJonathanFernandes/FinFeeX/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+This repository contains the FinFeeX MVP — a local-first, privacy-minded statement scanner that exposes hidden fees and drafts complaint emails.
+
+Contributing
+-------------
+Small PRs are welcome. See `CONTRIBUTING.md` for details. The project includes a GitHub Actions CI workflow that runs tests on push/PR.
+
+
 > *“Unmasking the hidden costs behind every financial statement.”*
 
 ---
