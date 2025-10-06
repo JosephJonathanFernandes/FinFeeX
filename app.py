@@ -4,6 +4,7 @@ from src.pdf_parser import extract_text_from_pdf_or_text
 from src.fee_detector import detect_fees_in_text
 from src.costs import annualize_fees
 from src.summarizer import render_fee_nutrition_label, draft_complaint_email
+from src.summarizer import llm_summary
 
 st.set_page_config(page_title="FinFeeX — Hidden-Fees X-Ray", layout="wide")
 
@@ -81,3 +82,13 @@ if uploaded is not None:
 
     # Helpful tips and CTA
     st.info('You can copy the email text or download the report to share with your bank. For percent fees, adjust the "Estimate of foreign transactions per year" to refine the amount.')
+
+    st.markdown('---')
+    st.subheader('Optional: LLM summary (OpenAI)')
+    api_key = st.text_input('OpenAI API key (optional, will not be stored)', type='password')
+    if api_key:
+        if st.button('Generate LLM summary'):
+            with st.spinner('Contacting LLM...'):
+                llm_out = llm_summary(text, openai_api_key=api_key)
+            st.subheader('LLM Summary')
+            st.write(llm_out)

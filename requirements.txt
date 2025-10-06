@@ -5,5 +5,7 @@ pandas
 regex
 Pillow
 reportlab
+pytest
+openai
 Pillow
 reportlab

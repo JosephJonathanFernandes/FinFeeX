@@ -39,3 +39,24 @@ def draft_complaint_email(df: pd.DataFrame, recipient_name: Optional[str] = 'Sup
     )
 
     return email
+
+
+def llm_summary(text: str, openai_api_key: str = None) -> str:
+    """Optional LLM-based summary using OpenAI API if api key provided.
+
+    This function is intentionally simple and falls back to a short extractive summary if OpenAI isn't available.
+    """
+    try:
+        if not openai_api_key:
+            raise RuntimeError('No OpenAI key')
+        import openai
+        openai.api_key = openai_api_key
+        prompt = (
+            "You are a helpful assistant that summarizes detected fees from a bank statement.\n"
+            "Given the extracted text, list top hidden fees and give a one-paragraph recommendation.\n\n" + text
+        )
+        resp = openai.ChatCompletion.create(model='gpt-3.5-turbo', messages=[{"role": "user", "content": prompt}], max_tokens=300)
+        return resp['choices'][0]['message']['content'].strip()
+    except Exception:
+        # fallback: return the first 300 characters
+        return (text[:300] + '...') if len(text) > 300 else text
