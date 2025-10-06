@@ -159,4 +159,4 @@ FinFeeX/
 
 ---
 
-Would you like me to now generate the **README text file (ready to upload to GitHub)** or **design a visual poster / one-page summary PDF** for FinFeeX next?
+
