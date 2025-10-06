@@ -1,0 +1,7 @@
+streamlit
+pdfplumber
+PyPDF2
+pandas
+regex
+Pillow
+reportlab

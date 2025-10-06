@@ -1,0 +1,10 @@
+Account Statement - Acme Bank
+
+Date: 2025-09-01
+Description                                      Amount
+Online payment convenience fee                   ₹49
+Foreign transaction markup                       2.5%
+Monthly account maintenance                       ₹25 monthly
+Processing Fee                                    ₹99
+
+End of statement
