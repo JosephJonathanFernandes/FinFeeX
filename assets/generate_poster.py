@@ -1,4 +1,77 @@
 from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import mm
+from reportlab.pdfgen import canvas
+from PIL import Image, ImageDraw, ImageFont
+import os
+
+OUT_DIR = os.path.dirname(__file__)
+PDF_PATH = os.path.join(OUT_DIR, 'FinFeeX_poster.pdf')
+PNG_PATH = os.path.join(OUT_DIR, 'FinFeeX_poster.png')
+
+
+def create_pdf(path=PDF_PATH):
+    c = canvas.Canvas(path, pagesize=A4)
+    w, h = A4
+
+    # Header
+    c.setFont('Helvetica-Bold', 28)
+    c.drawString(20*mm, h - 25*mm, 'FinFeeX — Hidden-Fees X-Ray')
+    c.setFont('Helvetica', 12)
+    c.drawString(20*mm, h - 33*mm, 'Unmasking the hidden costs behind every financial statement')
+
+    # Problem & solution
+    c.setFont('Helvetica-Bold', 14)
+    c.drawString(20*mm, h - 50*mm, 'Problem')
+    c.setFont('Helvetica', 11)
+    text = c.beginText(20*mm, h - 58*mm)
+    text.textLines('- Small recurring fees are buried in statements\n- Users rarely notice but pay thousands/year')
+    c.drawText(text)
+
+    c.setFont('Helvetica-Bold', 14)
+    c.drawString(20*mm, h - 90*mm, 'Solution')
+    c.setFont('Helvetica', 11)
+    text = c.beginText(20*mm, h - 98*mm)
+    text.textLines('- PDF parsing + NLP to detect fees\n- Fee Nutrition Label + complaint email generator')
+    c.drawText(text)
+
+    # Mock Fee Nutrition Label box
+    c.roundRect(120*mm, h - 120*mm, 65*mm, 60*mm, 6*mm, stroke=1, fill=0)
+    c.setFont('Helvetica-Bold', 12)
+    c.drawString(124*mm, h - 126*mm, 'Fee Nutrition Label')
+    c.setFont('Helvetica', 10)
+    c.drawString(124*mm, h - 136*mm, 'Transparency Score: 72%')
+    c.drawString(124*mm, h - 148*mm, 'Annual Hidden Cost: ₹1,020')
+    c.drawString(124*mm, h - 160*mm, 'Top: Convenience Fee ₹588')
+
+    # Footer
+    c.setFont('Helvetica-Oblique', 9)
+    c.drawString(20*mm, 15*mm, 'FinFeeX — Demo (MVP) — github.com/<your-username>/FinFeeX')
+
+    c.showPage()
+    c.save()
+
+
+def create_png(path=PNG_PATH):
+    # Create a simple PNG preview (A4 at 150 DPI)
+    dpi = 150
+    w, h = [int(x / mm * dpi / 25.4) for x in A4]
+    img = Image.new('RGB', (w, h), 'white')
+    draw = ImageDraw.Draw(img)
+
+    # Simple text; avoid dependency on external fonts
+    draw.text((40, 40), 'FinFeeX — Hidden-Fees X-Ray', fill='black')
+    draw.text((40, 80), 'Unmasking the hidden costs behind every financial statement', fill='gray')
+    draw.text((40, 140), 'Problem: Small recurring fees are buried in statements', fill='black')
+    draw.text((40, 180), 'Solution: PDF parsing + NLP to detect fees; Fee Nutrition Label', fill='black')
+
+    img.save(path)
+
+
+if __name__ == '__main__':
+    create_pdf()
+    create_png()
+    print('Generated poster:', PDF_PATH, PNG_PATH)
+from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm

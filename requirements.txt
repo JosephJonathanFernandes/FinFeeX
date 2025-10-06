@@ -5,3 +5,5 @@ pandas
 regex
 Pillow
 reportlab
+Pillow
+reportlab
