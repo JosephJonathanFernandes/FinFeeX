@@ -45,6 +45,15 @@ if uploaded is not None:
 
     st.table(display_df)
 
+    # Small visualization: top 5 annual estimates
+    if 'annual_cost_estimate' in df.columns:
+        viz = df.dropna(subset=['annual_cost_estimate']).sort_values('annual_cost_estimate', ascending=False).head(5)
+        if not viz.empty:
+            st.subheader('Top estimated annual fees')
+            viz_plot = viz.set_index('line')['annual_cost_estimate']
+            st.bar_chart(viz_plot)
+
+    st.markdown("---")
     st.subheader("Fee Nutrition Label")
     label = render_fee_nutrition_label(df)
     st.markdown(label)
@@ -52,3 +61,23 @@ if uploaded is not None:
     st.subheader("Auto-draft complaint")
     email = draft_complaint_email(df)
     st.text_area("Email draft", value=email, height=220)
+
+    # Export buttons: CSV, JSON, and download email
+    st.markdown("---")
+    st.write('Download report & email')
+    csv_bytes = df.to_csv(index=False).encode('utf-8')
+    st.download_button(label='Download CSV report', data=csv_bytes, file_name='finfeex_report.csv', mime='text/csv')
+
+    json_payload = {
+        'summary': render_fee_nutrition_label(df),
+        'detected_fees': df.to_dict(orient='records')
+    }
+    import json, io, datetime
+    json_bytes = json.dumps(json_payload, ensure_ascii=False, indent=2).encode('utf-8')
+    st.download_button(label='Download JSON report', data=json_bytes, file_name='finfeex_report.json', mime='application/json')
+
+    # Email download
+    st.download_button(label='Download complaint email (.txt)', data=email.encode('utf-8'), file_name='complaint_email.txt', mime='text/plain')
+
+    # Helpful tips and CTA
+    st.info('You can copy the email text or download the report to share with your bank. For percent fees, adjust the "Estimate of foreign transactions per year" to refine the amount.')
