@@ -3,16 +3,19 @@ import pandas as pd
 
 
 def render_fee_nutrition_label(df: pd.DataFrame) -> str:
+    """Render a small markdown 'nutrition label' for detected fees.
+
+    The function tolerates missing `annual_cost_estimate` column and returns
+    readable markdown for use in the Streamlit UI.
+    """
     total_hidden = int(df['annual_cost_estimate'].dropna().sum()) if 'annual_cost_estimate' in df.columns else 0
     count = len(df)
-    # Simple transparency heuristic: more money hidden -> lower score
     score = 100 - min(80, int(total_hidden / 20))
 
     md = f"**Transparency Score:** **{score}%**  \n\n"
     md += f"**Total Annual Hidden Cost (estimate):** **₹{total_hidden}**  \n\n"
     md += f"**Detected fee lines:** {count}  \n\n"
 
-    # top offenders
     if 'annual_cost_estimate' in df.columns:
         top = df.dropna(subset=['annual_cost_estimate']).sort_values('annual_cost_estimate', ascending=False).head(3)
         if not top.empty:
@@ -24,9 +27,20 @@ def render_fee_nutrition_label(df: pd.DataFrame) -> str:
 
 
 def draft_complaint_email(df: pd.DataFrame, recipient_name: Optional[str] = 'Support') -> str:
-    # Build friendly, actionable email referencing key detected fees
-    top = df.dropna(subset=['annual_cost_estimate']).sort_values('annual_cost_estimate', ascending=False).head(5)
-    fee_lines = '\n'.join([f"- {r['line']} (est. ₹{int(r['annual_cost_estimate'])})" for _, r in top.iterrows()]) if not top.empty else '\n'.join(df['line'].tolist()[:5])
+    """Create a friendly complaint email body from the detected fees DataFrame.
+
+    This is defensive: it will not raise if `annual_cost_estimate` is missing and will
+    fall back to listing detected lines.
+    """
+    if 'annual_cost_estimate' in df.columns:
+        top = df.dropna(subset=['annual_cost_estimate']).sort_values('annual_cost_estimate', ascending=False).head(5)
+    else:
+        top = pd.DataFrame()
+
+    if not top.empty:
+        fee_lines = '\n'.join([f"- {r['line']} (est. ₹{int(r['annual_cost_estimate'])})" for _, r in top.iterrows()])
+    else:
+        fee_lines = '\n'.join(df['line'].tolist()[:5]) if 'line' in df.columns else 'No fee lines detected.'
 
     email = (
         f"Dear {recipient_name},\n\n"
@@ -42,9 +56,10 @@ def draft_complaint_email(df: pd.DataFrame, recipient_name: Optional[str] = 'Sup
 
 
 def llm_summary(text: str, openai_api_key: str = None) -> str:
-    """Optional LLM-based summary using OpenAI API if api key provided.
+    """Optional LLM-based summary using OpenAI API if API key provided.
 
-    This function is intentionally simple and falls back to a short extractive summary if OpenAI isn't available.
+    Falls back to an extractive snippet if the OpenAI client isn't available or the
+    call fails. This function is intentionally minimal for an MVP.
     """
     try:
         if not openai_api_key:
@@ -58,5 +73,4 @@ def llm_summary(text: str, openai_api_key: str = None) -> str:
         resp = openai.ChatCompletion.create(model='gpt-3.5-turbo', messages=[{"role": "user", "content": prompt}], max_tokens=300)
         return resp['choices'][0]['message']['content'].strip()
     except Exception:
-        # fallback: return the first 300 characters
         return (text[:300] + '...') if len(text) > 300 else text

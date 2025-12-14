@@ -1,14 +1,19 @@
+.PHONY: venv install test run clean docker-build docker-run
+
 venv:
 	python -m venv .venv
 
 install: venv
-	. .venv/Scripts/activate && pip install -r requirements.txt
-
-run:
-	python -m streamlit run app.py
+	.\.venv\Scripts\Activate.ps1; pip install --upgrade pip; pip install -r requirements.txt
 
 test:
-	pytest -q
+	.\.venv\Scripts\Activate.ps1; pytest -q
+
+run:
+	.\.venv\Scripts\Activate.ps1; streamlit run app.py
+
+clean:
+	Remove-Item -Recurse -Force .venv, __pycache__, .pytest_cache, src/__pycache__, tests/__pycache__ -ErrorAction SilentlyContinue
 
 docker-build:
 	docker build -t finfeex:latest .

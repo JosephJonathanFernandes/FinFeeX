@@ -1,5 +1,7 @@
 import io
 import pdfplumber
+import io
+import pdfplumber
 
 def extract_text_from_pdf_or_text(uploaded_file) -> str:
     """Accepts an uploaded file-like object from Streamlit and returns extracted text.
