@@ -13,9 +13,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better UI with improved color scheme
+# Custom CSS for human-centered design
 st.markdown("""
 <style>
+    /* Animated header with better visibility */
     .main-header {
         font-size: 3rem;
         font-weight: bold;
@@ -32,105 +33,324 @@ st.markdown("""
         50% {background-position: 100% 50%;}
         100% {background-position: 0% 50%;}
     }
+    
+    /* More friendly subtitle */
     .subtitle {
         text-align: center;
         color: #555;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         margin-bottom: 2rem;
-        font-weight: 500;
+        font-weight: 400;
+        line-height: 1.6;
     }
+    
+    /* Welcoming success banner */
     .success-banner {
         background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        padding: 1.2rem;
-        border-radius: 12px;
+        padding: 1.5rem;
+        border-radius: 15px;
         color: white;
         text-align: center;
-        font-weight: bold;
-        margin: 1rem 0;
-        box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+        font-weight: 600;
+        margin: 1.5rem 0;
+        box-shadow: 0 8px 25px rgba(17, 153, 142, 0.3);
+        animation: slideIn 0.5s ease-out;
     }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Friendly button styling */
     .stButton>button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
-        padding: 0.6rem 1.2rem;
-        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
         font-weight: 600;
+        font-size: 1rem;
         transition: all 0.3s ease;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        cursor: pointer;
     }
     .stButton>button:hover {
         background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
     }
-    .example-card {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        padding: 2rem;
+    .stButton>button:active {
+        transform: translateY(-1px);
+    }
+    
+    /* Better info boxes */
+    .stAlert {
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    /* Enhanced metric cards */
+    [data-testid="stMetricValue"] {
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+    
+    /* Better file uploader */
+    [data-testid="stFileUploader"] {
+        border: 2px dashed #667eea;
         border-radius: 15px;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 10%);
+        transition: all 0.3s ease;
+    }
+    [data-testid="stFileUploader"]:hover {
+        border-color: #764ba2;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 20%);
+        transform: scale(1.01);
+    }
+    
+    /* Progress indicator */
+    .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin: 2rem 0;
+        padding: 0 2rem;
+    }
+    .step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+        padding: 1rem;
+    }
+    .step::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .step.active::before {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .step.completed::before {
+        background: #11998e;
+        content: '✓';
+        color: white;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Helpful tooltips */
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: help;
+        color: #667eea;
+        font-weight: 600;
+    }
+    
+    /* Better card styling */
+    .info-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin: 1rem 0;
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    .info-card:hover {
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    
+    /* Friendly example section */
+    .example-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+        padding: 2.5rem;
+        border-radius: 20px;
         text-align: center;
         margin: 2rem 0;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        border: 2px solid #e0e0e0;
     }
     .example-metric {
         background: white;
         padding: 1.5rem;
-        border-radius: 10px;
+        border-radius: 12px;
         margin: 1rem 0;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+    }
+    .example-metric:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
     }
     .highlight {
         color: #667eea;
         font-weight: bold;
     }
+    
+    /* Smooth dataframe */
+    [data-testid="stDataFrame"] {
+        border-radius: 12px;
+        overflow: hidden;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar for settings and info
+# Sidebar with human-centered design
 with st.sidebar:
-    st.image("https://img.icons8.com/clouds/200/money-box.png", width=150)
-    st.title("⚙️ Settings")
+    st.image("https://img.icons8.com/clouds/200/money-box.png", width=120)
     
-    est_txns = st.number_input(
-        "📊 Annual foreign transactions",
-        min_value=0,
-        value=12,
-        help="Estimate of foreign transactions per year (for % fees calculation)"
+    st.markdown("### ⚙️ Quick Settings")
+    
+    with st.expander("📊 Configure Analysis", expanded=True):
+        est_txns = st.number_input(
+            "Annual foreign transactions",
+            min_value=0,
+            max_value=1000,
+            value=12,
+            help="💡 How many international transactions do you make per year? This helps calculate percentage-based FX fees."
+        )
+        
+        show_raw_text = st.checkbox(
+            "🔍 Show extracted text",
+            value=False,
+            help="View the raw text extracted from your statement"
+        )
+    
+    st.markdown("---")
+    
+    # Progress tracker
+    if 'fee_history' in st.session_state and len(st.session_state.fee_history) > 0:
+        st.markdown("### 🎯 Your Progress")
+        st.success(f"✅ {len(st.session_state.fee_history)} statement(s) analyzed")
+        
+        total_fees = sum(
+            sum(f.get('annual_cost_estimate', 0) for f in entry['fees'])
+            for entry in st.session_state.fee_history
+        )
+        st.metric("Total Fees Found", f"₹{int(total_fees):,}")
+        
+        if st.button("🔄 Analyze Another"):
+            st.info("👆 Upload a new statement above")
+    else:
+        st.markdown("### 🚀 Getting Started")
+        st.markdown("""
+        **Quick Guide:**
+        1. 📤 Upload your statement
+        2. ⏳ Wait for analysis
+        3. 📊 View your results
+        4. 📧 Download reports
+        
+        **💡 Tip:** Start with the sample statement in `sample_data/` folder!
+        """)
+    
+    st.markdown("---")
+    
+    with st.expander("📚 Learn More"):
+        st.markdown("""
+        **Why FinFeeX?**
+        
+        Banks hide fees in fine print. 
+        We make them visible.
+        
+        - 🔒 100% Private
+        - 🏗️ Open Source
+        - 🔥 Always Free
+        """)
+    
+    st.markdown("---")
+    st.caption("🌟 Made with ❤️ for financial transparency")
+
+# Main header with context
+st.markdown('<div class="main-header">💰 FinFeeX — Hidden-Fees X-Ray</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">🕵️ Discover what your bank isn\'t telling you. Upload your statement and we\'ll find every hidden fee.</div>', unsafe_allow_html=True)
+
+# Initialize session state for analytics
+if 'fee_history' not in st.session_state:
+    st.session_state.fee_history = []
+if 'current_step' not in st.session_state:
+    st.session_state.current_step = 1
+
+# Progress indicator
+if st.session_state.current_step > 1:
+    st.markdown("""
+    <div class="step-indicator">
+        <div class="step completed">
+            <div style="margin-top: 50px;">✅ Upload</div>
+        </div>
+        <div class="step {}">
+            <div style="margin-top: 50px;">🔍 Analyze</div>
+        </div>
+        <div class="step {}">
+            <div style="margin-top: 50px;">📊 Results</div>
+        </div>
+        <div class="step {}">
+            <div style="margin-top: 50px;">📥 Download</div>
+        </div>
+    </div>
+    """.format(
+        "active" if st.session_state.current_step == 2 else "completed" if st.session_state.current_step > 2 else "",
+        "active" if st.session_state.current_step == 3 else "completed" if st.session_state.current_step > 3 else "",
+        "active" if st.session_state.current_step == 4 else ""
+    ), unsafe_allow_html=True)
+
+# Upload section with friendly guidance
+st.markdown("")
+st.markdown("### 👋 Let's Start Finding Your Hidden Fees")
+
+col_intro1, col_intro2 = st.columns([3, 2])
+
+with col_intro1:
+    uploaded = st.file_uploader(
+        "Drop your bank or credit card statement here",
+        type=["pdf", "txt"],
+        help="🔒 Your data stays private. We process everything locally and never store your information."
     )
     
-    show_raw_text = st.checkbox("🔍 Show extracted text", value=False)
-    
-    st.markdown("---")
-    st.subheader("📚 About FinFeeX")
+with col_intro2:
     st.markdown("""
-    **FinFeeX** helps you:
-    - 🔍 Detect hidden fees
-    - 💰 Calculate annual costs
-    - 📧 Draft complaint emails
-    - 📊 Visualize fee breakdown
-    """)
-    
-    st.markdown("---")
-    st.markdown("🌟 **Made with ❤️ for financial transparency**")
-
-# Main header
-st.markdown('<div class="main-header">💰 FinFeeX — Hidden-Fees X-Ray</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">🔍 Unmask hidden costs in your financial statements</div>', unsafe_allow_html=True)
-
-# Upload section with better UX
-st.markdown("### 📤 Upload Your Statement")
-uploaded = st.file_uploader(
-    "Drag and drop your bank/credit card statement here",
-    type=["pdf", "txt"],
-    help="Supports PDF and TXT formats. Your data is processed locally and never stored."
-)
+    <div class="info-card">
+        <h4 style="color: #667eea; margin-top: 0;">💡 First Time?</h4>
+        <p style="margin-bottom: 0; font-size: 0.9rem; color: #666;">
+        Try our sample statement to see FinFeeX in action! Find it in:<br>
+        <code>sample_data/sample_statement.txt</code>
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 if uploaded is not None:
-    # Processing section
-    with st.spinner("🔄 Analyzing your statement..."):
+    st.session_state.current_step = 2
+    
+    # Processing section with personality
+    with st.spinner("🔍 Reading your statement... Looking for sneaky fees..."):
         text = extract_text_from_pdf_or_text(uploaded)
     
-    st.markdown('<div class="success-banner">✅ Statement processed successfully!</div>', unsafe_allow_html=True)
+    st.session_state.current_step = 3
+    st.markdown('<div class="success-banner">✅ Got it! We found your statement. Now let\'s see what they\'re charging you...</div>', unsafe_allow_html=True)
     
     # Show extracted text in expander (optional)
     if show_raw_text:
@@ -141,8 +361,24 @@ if uploaded is not None:
     fees = detect_fees_in_text(text)
     df = annualize_fees(fees, estimated_annual_txns=est_txns)
     
-    # Key metrics at the top
+    # Add to history for analytics (only if not already added)
+    statement_name = uploaded.name
+    if not any(h['name'] == statement_name for h in st.session_state.fee_history):
+        from datetime import datetime
+        st.session_state.fee_history.append({
+            'name': statement_name,
+            'date': datetime.now().strftime('%Y-%m-%d'),
+            'fees': df.to_dict('records')
+        })
+    
+    # Show analytics link
+    if len(st.session_state.fee_history) > 0:
+        st.info(f"📊 {len(st.session_state.fee_history)} statement(s) tracked. Visit the **Analytics** page to see trends and comparisons!")
+    
+    # Key metrics with context
     if not df.empty:
+        st.markdown("### 💡 Here's What We Found")
+        
         col1, col2, col3, col4 = st.columns(4)
         
         total_annual = int(df['annual_cost_estimate'].dropna().sum()) if 'annual_cost_estimate' in df.columns else 0
@@ -151,13 +387,46 @@ if uploaded is not None:
         avg_fee = int(total_annual / fee_count) if fee_count > 0 else 0
         
         with col1:
-            st.metric("💰 Total Annual Cost", f"₹{total_annual:,}", help="Estimated yearly cost of all detected fees")
+            st.metric(
+                "💸 You're Paying",
+                f"₹{total_annual:,}/year",
+                help="This is what these fees cost you annually. Imagine what you could do with this money!"
+            )
+        
         with col2:
-            st.metric("📊 Transparency Score", f"{score}%", delta=f"{score-70}% vs avg", help="Higher is better")
+            delta_text = "Good" if score >= 80 else "Fair" if score >= 60 else "Poor"
+            delta_color = "normal" if score >= 60 else "inverse"
+            st.metric(
+                "🎯 Transparency",
+                f"{score}%",
+                delta=delta_text,
+                delta_color=delta_color,
+                help="How transparent your bank is being. Higher is better!"
+            )
+        
         with col3:
-            st.metric("🔍 Fees Detected", f"{fee_count}", help="Number of fee-related lines found")
+            st.metric(
+                "🔍 Fees Found",
+                f"{fee_count}",
+                help="Number of separate fees we detected. More fees = more places to save!"
+            )
+        
         with col4:
-            st.metric("📈 Avg Fee/Year", f"₹{avg_fee:,}", help="Average annual cost per fee")
+            st.metric(
+                "📈 Average Fee",
+                f"₹{avg_fee:,}/year",
+                help="Average cost per fee annually"
+            )
+        
+        # Emotional context based on total
+        if total_annual > 2000:
+            st.error("😱 **Wow, that's a lot!** You're paying over ₹2,000 in fees annually. Let's see if we can help you reduce this.")
+        elif total_annual > 1000:
+            st.warning("🤔 **That adds up!** Over ₹1,000 per year in fees. Worth reviewing if you can reduce these.")
+        elif total_annual > 500:
+            st.info("💡 **Moderate fees detected.** Not terrible, but there might be room for savings.")
+        else:
+            st.success("🎉 **Good news!** Your fees are relatively low. But every rupee saved is a rupee earned!")
     
     st.markdown("---")
     
@@ -181,86 +450,122 @@ if uploaded is not None:
             display_df['Detected Value'] = display_df.apply(fmt_val, axis=1)
             display_df = display_df.rename(columns={
                 'line': 'Fee Description',
-                'frequency': 'Frequency'
+                'frequency': 'Frequency',
+                'category': 'Category'
             })
-            display_df = display_df[['Fee Description', 'Detected Value', 'Frequency', 'Annual Cost']]
+            # Include category in display
+            cols = ['Category', 'Fee Description', 'Detected Value', 'Frequency', 'Annual Cost']
+            display_df = display_df[[c for c in cols if c in display_df.columns]]
         
         # Use dataframe instead of table for better interactivity
         st.dataframe(display_df, width='stretch', hide_index=True)
     else:
-        st.info("ℹ️ No fees detected in this statement. This is great news!")
+        # Celebratory empty state
+        st.markdown("""
+        <div class="info-card" style="text-align: center; padding: 3rem;">
+        <h2>🎉 Fantastic News!</h2>
+        <p style="font-size: 1.2rem; margin-top: 1rem;">We didn't find any obvious fees in this statement.</p>
+        <p style="color: #666; margin-top: 1rem;">This could mean:</p>
+        <ul style="text-align: left; display: inline-block; margin-top: 1rem;">
+        <li>✅ Your bank is being transparent</li>
+        <li>✅ You have a zero-fee account</li>
+        <li>✅ Fees might be on a different statement</li>
+        </ul>
+        <p style="margin-top: 2rem; color: #666;"><em>Try analyzing more statements to get the full picture!</em></p>
+        </div>
+        """, unsafe_allow_html=True)
 
     # Visualization section
-    st.markdown("---")
-    st.markdown("### 📊 Visual Analysis")
-    
-    viz_col1, viz_col2 = st.columns([2, 1])
-    
-    with viz_col1:
-        if 'annual_cost_estimate' in df.columns and not df.empty:
-            viz = df.dropna(subset=['annual_cost_estimate']).sort_values('annual_cost_estimate', ascending=False).head(5)
-            if not viz.empty:
-                st.markdown("#### 🔝 Top 5 Annual Fees")
-                # Create a better formatted chart
-                chart_data = viz.set_index('line')['annual_cost_estimate']
-                st.bar_chart(chart_data, width='stretch')
-    
-    with viz_col2:
-        st.markdown("#### 📄 Fee Nutrition Label")
-        label = render_fee_nutrition_label(df)
-        st.markdown(label)
+    if not df.empty:
+        st.markdown("---")
+        st.markdown("### 📊 Visual Analysis")
+        
+        viz_col1, viz_col2 = st.columns([2, 1])
+        
+        with viz_col1:
+            if 'annual_cost_estimate' in df.columns:
+                viz = df.dropna(subset=['annual_cost_estimate']).sort_values('annual_cost_estimate', ascending=False).head(5)
+                if not viz.empty:
+                    st.markdown("#### 🔝 Top 5 Annual Fees")
+                    # Create a better formatted chart
+                    chart_data = viz.set_index('line')['annual_cost_estimate']
+                    st.bar_chart(chart_data, width='stretch')
+                    st.caption("💡 These are your biggest fee sources")
+        
+        with viz_col2:
+            st.markdown("#### 📄 Fee Nutrition Label")
+            label = render_fee_nutrition_label(df)
+            st.markdown(label)
     
     # Complaint email section
     st.markdown("---")
-    st.markdown("### 📧 Auto-Generated Complaint Email")
+    st.markdown("### 📧 Ready to Fight Back?")
+    st.markdown("<p class='subtitle'>We've drafted a professional email for you. All you need to do is personalize it and hit send!</p>", unsafe_allow_html=True)
     
-    tab1, tab2 = st.tabs(["📝 Email Draft", "💡 Tips"])
+    tab1, tab2 = st.tabs(["📝 Email Draft", "💡 Pro Tips"])
     
     with tab1:
         email = draft_complaint_email(df)
+        st.markdown("**Your personalized complaint email:**")
         st.text_area(
-            "Copy this email and send to your bank:",
+            "Click inside to select all (Ctrl+A), then copy (Ctrl+C):",
             value=email,
             height=300,
-            help="Customize this template before sending"
+            help="Feel free to modify this - make it yours!",
+            label_visibility="collapsed"
         )
+        
+        # Helpful reminder
+        st.info("💡 **Pro tip:** Don't forget to replace [Your name] and add your account details before sending!")
         
         # Quick copy button effect
         col_a, col_b, col_c = st.columns([1, 2, 1])
         with col_b:
-            if st.button("📋 Copy to Clipboard"):
-                st.toast("✅ Email copied! (Use Ctrl+C to copy the text above)", icon="✅")
+            if st.button("📋 Select All Text"):
+                st.toast("✅ Text ready! Press Ctrl+A then Ctrl+C to copy", icon="📋")
     
     with tab2:
         st.markdown("""
-        **Before sending:**
-        - ✅ Replace `[Your name]` and `[Contact email or phone]` with your details
-        - ✅ Add your account number and customer ID
-        - ✅ Attach this PDF report as evidence
-        - ✅ Keep the tone professional but firm
-        - ✅ Follow up after 14 days if no response
+        <div class="info-card">
+        <h4>📝 Before You Send</h4>
+        <ul>
+        <li>✅ <strong>Personalize it:</strong> Replace [Your name] and contact details</li>
+        <li>✅ <strong>Add specifics:</strong> Include your account number and customer ID</li>
+        <li>✅ <strong>Attach proof:</strong> Download the CSV report below and attach it</li>
+        <li>✅ <strong>Stay professional:</strong> Firm but polite gets better results</li>
+        <li>✅ <strong>Follow through:</strong> Set a reminder to follow up in 14 days</li>
+        </ul>
+        </div>
         
-        **Your Rights:**
-        - Banks must disclose all fees clearly (RBI guidelines)
-        - You can request refunds for unauthorized charges
-        - You have the right to close accounts without penalties
-        """)
+        <div class="info-card" style="margin-top: 1rem;">
+        <h4>⚖️ Know Your Rights</h4>
+        <ul>
+        <li>🛡️ Banks <strong>must</strong> disclose all fees clearly (RBI guidelines)</li>
+        <li>💰 You <strong>can</strong> request refunds for unauthorized charges</li>
+        <li>🚪 You <strong>have the right</strong> to close accounts without penalties</li>
+        <li>📞 Contact RBI Banking Ombudsman if bank doesn't respond</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
     # Export and download section
     st.markdown("---")
-    st.markdown("### 📥 Download Reports")
+    st.markdown("### 📥 Take This With You")
+    st.markdown("<p class='subtitle'>Save your analysis and use it as evidence when contacting your bank.</p>", unsafe_allow_html=True)
     
     col_d1, col_d2, col_d3 = st.columns(3)
     
     with col_d1:
         csv_bytes = df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label='📊 Download CSV Report',
+            label='📊 CSV Report',
             data=csv_bytes,
             file_name='finfeex_report.csv',
             mime='text/csv',
+            help='Download as Excel/Sheets-friendly format',
             width='stretch'
         )
+        st.caption("📈 Open in Excel")
     
     with col_d2:
         json_payload = {
@@ -271,42 +576,68 @@ if uploaded is not None:
         from datetime import datetime
         json_bytes = json.dumps(json_payload, ensure_ascii=False, indent=2).encode('utf-8')
         st.download_button(
-            label='📄 Download JSON Report',
+            label='📄 JSON Report',
             data=json_bytes,
             file_name=f'finfeex_report_{datetime.now().strftime("%Y%m%d")}.json',
             mime='application/json',
+            help='Download as structured data format',
             width='stretch'
         )
+        st.caption("🔧 For developers")
     
     with col_d3:
         st.download_button(
-            label='📧 Download Email Draft',
+            label='📧 Email Draft',
             data=email.encode('utf-8'),
             file_name='complaint_email.txt',
             mime='text/plain',
+            help='Download ready-to-send email template',
             width='stretch'
         )
+        st.caption("✍️ Ready to send")
     
     # LLM Summary section (optional advanced feature)
     st.markdown("---")
-    with st.expander("🤖 Advanced: AI-Powered Summary (Optional)"):
-        st.markdown("Use OpenAI to generate a detailed summary and recommendations.")
+    with st.expander("🤖 Want Even Deeper Insights? (AI-Powered)"):
+        st.markdown("""
+        <div class="info-card">
+        <p>Use OpenAI's AI to get personalized recommendations and strategies to reduce your fees.</p>
+        <p><strong>Note:</strong> Requires your own OpenAI API key (not stored, used only for this session).</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
         api_key = st.text_input(
             '🔑 OpenAI API Key',
             type='password',
-            help="Your API key is not stored. Used only for this session."
+            help="Get your API key from platform.openai.com. It's not stored anywhere.",
+            placeholder="sk-..."
         )
         
         if api_key:
-            if st.button('✨ Generate AI Summary', width='stretch'):
-                with st.spinner('🤖 AI is analyzing your fees...'):
-                    llm_out = llm_summary(text, openai_api_key=api_key)
-                st.markdown("#### 🎯 AI Insights")
-                st.success(llm_out)
+            if st.button('✨ Generate Personalized AI Insights', type='primary'):
+                with st.spinner('🧠 AI is analyzing your fees and finding savings opportunities...'):
+                    try:
+                        llm_out = llm_summary(text, openai_api_key=api_key)
+                        st.markdown("#### 🎯 Your Personalized Insights")
+                        st.success(llm_out)
+                    except Exception as e:
+                        st.error(f"❌ Oops! Something went wrong: {str(e)}")
+                        st.info("💡 Make sure your API key is valid and has credits available.")
     
-    # Footer with helpful info
+    # Footer with helpful next steps
     st.markdown("---")
-    st.info("💡 **Pro Tip:** Adjust the annual transactions estimate in the sidebar for more accurate percentage fee calculations.")
+    st.markdown("""
+    <div class="info-card">
+    <h4>🎉 What's Next?</h4>
+    <ol>
+    <li><strong>Send the email</strong> to your bank (don't forget to personalize it!)</li>
+    <li><strong>Track your statements</strong> over time using our Analytics page</li>
+    <li><strong>Compare with other banks</strong> using our Comparison tool</li>
+    <li><strong>Share FinFeeX</strong> with friends who might be overpaying too!</li>
+    </ol>
+    <p style="margin-top: 1rem; color: #666;"><em>Remember: Every fee you question is a step towards financial transparency. You've got this! 💪</em></p>
+    </div>
+    """, unsafe_allow_html=True)
 
 else:
     # Welcome screen when no file is uploaded
